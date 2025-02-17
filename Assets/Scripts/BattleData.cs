@@ -13,6 +13,7 @@ public struct battleData
 
 public class BattleData : MonoBehaviour
 {
+    public battleData data;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
