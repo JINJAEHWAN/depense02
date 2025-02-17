@@ -8,22 +8,26 @@ public class Player : BattleData
 
 
     [SerializeField] private float CurFood, FoodRegen, MaxFood, CurMana, ManaRegen, MaxMana;
+
     [Header("플레이어 이동 범위")]
     [SerializeField] private float left;
     [SerializeField] private float right;
+
     [Header("카메라 이동 범위")]
     [SerializeField] private float leftC;
     [SerializeField] private float rightC;
 
-    [Header("스킬 시전할 위치\n(바꾸고 싶으면 등록되어 있는 오브젝트 위치 수정)")]
+    [Header("스킬 시전할 위치 Create Empty 해서 등록\n(바꾸고 싶으면 등록되어 있는 오브젝트 위치 수정)")]
     [SerializeField] private Transform skillposition;
-
 
     [Header("발동할 스킬 resources에서 찾아서 등록")]
     [SerializeField] private Skills[] skills;
 
-    [SerializeField] Slider FoodSlider, ManaSlider;
-    [SerializeField] TextMeshProUGUI FoodText, ManaText;
+    [Header("UI 만들고 Slider, Text 등록")]
+    [SerializeField] Slider FoodSlider;
+    [SerializeField] Slider ManaSlider;
+    [SerializeField] TextMeshProUGUI FoodText;
+    [SerializeField] TextMeshProUGUI ManaText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -52,16 +56,18 @@ public class Player : BattleData
         //QWE로 스킬 발동.
         if (Input.GetKeyDown(KeyCode.Q) && skills[0].Mana < CurMana)
         {
+            animator.SetTrigger("OnAttack");
             Instantiate(skills[0], skillposition.position, Quaternion.identity);
             CurMana -= skills[0].Mana;
         }
         if (Input.GetKeyDown(KeyCode.W) && skills[1].Mana < CurMana)
         {
+            animator.SetTrigger("OnAttack");
             Instantiate(skills[1], skillposition.position, Quaternion.identity);
             CurMana -= skills[1].Mana;
         }
         //3번 스킬 아직 안 만듦.
-        if (Input.GetKeyDown(KeyCode.E) && skills[2].Mana < CurMana)
+        if (Input.GetKeyDown(KeyCode.E))
         {
 
         }

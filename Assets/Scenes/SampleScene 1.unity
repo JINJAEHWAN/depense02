@@ -205,7 +205,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.783
+  m_Value: 0.476
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5645,7 +5645,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.392
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5701,13 +5701,13 @@ MonoBehaviour:
     MaxHp: 1500
     attackSpeed: 0
     cost: 0
-    moveSpeed: 3
+    moveSpeed: 5
   animator: {fileID: 0}
   CurFood: 0
   FoodRegen: 2
   MaxFood: 40
   CurMana: 0
-  ManaRegen: 2.5
+  ManaRegen: 8
   MaxMana: 100
   left: -16
   right: 16
