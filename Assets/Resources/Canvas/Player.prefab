@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 2140819438413762616}
   - component: {fileID: 8500066892321807428}
   - component: {fileID: 1431173917481527755}
+  - component: {fileID: 4852796954254530239}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -239,6 +240,24 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4852796954254530239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450376760832913808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a4879a5b2cedd4c8ac216b8dd95b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FoodSlider: {fileID: 6203366827267479275}
+  ManaSlider: {fileID: 3975360514816306071}
+  FoodText: {fileID: 1993026007327446254}
+  ManaText: {fileID: 2406860148787751788}
+  playerHPSliderTop: {fileID: 8111639875533902887}
+  playerHPSliderField: {fileID: 9025362219321300753}
 --- !u!1 &503402587153004314
 GameObject:
   m_ObjectHideFlags: 0
@@ -4029,3 +4048,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7651044990169086074, guid: e721e45144690c848a06d2aafd1b3f74, type: 3}
   m_PrefabInstance: {fileID: 1968646038195991954}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9025362219321300753 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7355097523503391363, guid: e721e45144690c848a06d2aafd1b3f74, type: 3}
+  m_PrefabInstance: {fileID: 1968646038195991954}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
