@@ -4,8 +4,9 @@ using UnityEngine.UI;
 
 public class Player : BattleData
 {
+    public static Player Instance;
     public Animator animator;
-
+    public Rigidbody2D rigid;
 
     [SerializeField] private float CurFood, FoodRegen, MaxFood, CurMana, ManaRegen, MaxMana;
 
@@ -21,25 +22,61 @@ public class Player : BattleData
     [SerializeField] private Transform skillposition;
 
     [Header("발동할 스킬 resources에서 찾아서 등록")]
-    [SerializeField] private Skills[] skills;
+    public Skills[] skills;
+
+    public KeyCode[] Skillkeys = new KeyCode[3];
 
     [Header("UI 만들고 Slider, Text 등록")]
     [SerializeField] Slider FoodSlider;
     [SerializeField] Slider ManaSlider;
     [SerializeField] TextMeshProUGUI FoodText;
     [SerializeField] TextMeshProUGUI ManaText;
+
+    [Header("UI 만들고 이동 버튼 등록")]
+
+    [SerializeField] private MoveButton[] Movebtn = new MoveButton[2];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Instance = this;
         animator = GetComponentInChildren<Animator>();
+        rigid = GetComponent<Rigidbody2D>();
+        //스킬 키 설정.
+
+        Skillkeys[0] = KeyCode.Q;
+        Skillkeys[1] = KeyCode.W;
+        Skillkeys[2] = KeyCode.E;
+
+        SkillsUI sUI = FindFirstObjectByType<SkillsUI>();
+        for(int i=0; i<3; i++)
+        {
+            sUI.InitFunction();
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        float move = Input.GetAxis("Horizontal");
-        transform.Translate(move * Vector3.right * Time.deltaTime * data.moveSpeed);
-        animator.SetBool("IsWalk", !Mathf.Approximately(move, 0f));
+        float moveDir = 0;
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            moveDir -= 1;
+        }
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            moveDir += 1;
+        }
+        if (!Mathf.Approximately(moveDir, 0f))
+        {
+            Move_(moveDir);
+        }
+        else if (!Movebtn[0].IsPush && !Movebtn[1].IsPush)
+        {
+            animator.SetBool("IsWalk", false);
+        }
+        
+
 
         //식량, 마나 회복 및 ui에 값 표시
         if (CurFood < MaxFood) CurFood += FoodRegen * Time.deltaTime;
@@ -53,25 +90,29 @@ public class Player : BattleData
 
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, left, right), transform.position.y, transform.position.z);
 
-        //QWE로 스킬 발동.
-        if (Input.GetKeyDown(KeyCode.Q) && skills[0].Mana < CurMana)
+        //설정한 키로 스킬 발동.
+        //원본 게임도 쿨타임이 없으므로 여기도 없음.
+        for(int i=0; i<3; i++)
         {
-            animator.SetTrigger("OnAttack");
-            Instantiate(skills[0], skillposition.position, Quaternion.identity);
-            CurMana -= skills[0].Mana;
+            if (Input.GetKeyDown(Skillkeys[i]))
+            {
+                UseNthSkill(i);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.W) && skills[1].Mana < CurMana)
+        
+    }
+    public void Move_(float dir)
+    {
+        transform.Translate(dir * Vector3.right * data.moveSpeed * Time.deltaTime);
+        animator.SetBool("IsWalk", true);
+    }
+    public void UseNthSkill(int n)
+    {
+        if (skills[n].Mana < CurMana)
         {
             animator.SetTrigger("OnAttack");
-            Instantiate(skills[1], skillposition.position, Quaternion.identity);
-            CurMana -= skills[1].Mana;
-        }
-        //3번 스킬 아직 안 만듦.
-        if (Input.GetKeyDown(KeyCode.E) && skills[2].Mana< CurMana)
-        {
-            animator.SetTrigger("OnAttack");
-            Instantiate(skills[2], skillposition.position, Quaternion.identity);
-            CurMana -= skills[2].Mana;
+            Instantiate(skills[n], skillposition.position, Quaternion.identity);
+            CurMana -= skills[n].Mana;
         }
     }
 

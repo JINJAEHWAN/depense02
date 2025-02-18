@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ed5d519629282d4fb4a1c24807d27c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillspr: {fileID: 0}
-  Mana: 30
+  skillspr: {fileID: 21300000, guid: 7b34caca00a1514468b8d9cc005a43fc, type: 3}
+  Mana: 25
   DestroyTime: 2
 --- !u!1 &1048019394842291852
 GameObject:
@@ -90,7 +90,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1048019394842291852}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -4935,7 +4935,7 @@ ParticleSystem:
   m_GameObject: {fileID: 2011646143531165471}
   serializedVersion: 8
   lengthInSec: 4
-  simulationSpeed: 2
+  simulationSpeed: 4
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -10017,7 +10017,7 @@ ParticleSystem:
   m_GameObject: {fileID: 3434624651031193130}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -14921,7 +14921,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4319982271937183772}
   serializedVersion: 8
   lengthInSec: 4
-  simulationSpeed: 2
+  simulationSpeed: 4
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
