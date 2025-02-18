@@ -8,7 +8,7 @@ public class Player : BattleData
     public static Player Instance;
     [HideInInspector] public Animator animator;
 
-    public float CurFood, FoodRegen, MaxFood, CurMana, ManaRegen, MaxMana;
+    [SerializeField] float CurFood, FoodRegen, MaxFood, CurMana, ManaRegen, MaxMana;
 
     [Header("플레이어 이동 범위")]
     [SerializeField] float left;
@@ -22,12 +22,19 @@ public class Player : BattleData
     [SerializeField] Transform skillposition;
 
     [Header("HP바 표시할 위치 Create Empty 해서 등록\n(바꾸고 싶으면 등록되어 있는 오브젝트 위치 수정)")]
-    public Transform hpbarposition;
+    [SerializeField] Transform hpbarposition;
 
     [Header("발동할 스킬 resources에서 찾아서 등록")]
     public Skills[] skills;
 
     [HideInInspector] public KeyCode[] Skillkeys = new KeyCode[3];
+
+    [Header("UI 만들고 Slider, Text 등록")]
+    [SerializeField] Slider FoodSlider;
+    [SerializeField] Slider ManaSlider;
+    [SerializeField] TextMeshProUGUI FoodText;
+    [SerializeField] TextMeshProUGUI ManaText;
+    [SerializeField] Slider playerHPSliderTop, playerHPSliderField;
 
     [Header("UI 만들고 이동 버튼 등록")]
     [SerializeField] MoveButton[] Movebtn = new MoveButton[2];
@@ -35,7 +42,6 @@ public class Player : BattleData
     void Start()
     {
         Instance = this;
-        FindFirstObjectByType<SliderValueChange>().PlayerHPChanged();
         animator = GetComponentInChildren<Animator>();
         data.hp = data.MaxHp;
         //스킬 키 설정. 수정하고 싶으면 여기서 수정.
@@ -79,6 +85,10 @@ public class Player : BattleData
         else if (CurFood > MaxFood) CurFood = MaxFood;
         if (CurMana < MaxMana) CurMana += ManaRegen * Time.deltaTime;
         else if (CurMana > MaxMana) CurMana = MaxMana;
+        FoodSlider.value = CurFood / MaxFood;
+        ManaSlider.value = CurMana / MaxMana;
+        FoodText.text = CurFood.ToString("F0") + " / " + MaxFood.ToString("F0");
+        ManaText.text = CurMana.ToString("F0") + " / " + MaxMana.ToString("F0");
 
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, left, right), transform.position.y, transform.position.z);
 
@@ -91,6 +101,7 @@ public class Player : BattleData
                 UseNthSkill(i);
             }
         }
+        playerHPSliderField.value = playerHPSliderTop.value = (float)data.hp / data.MaxHp;
     }
     public void Move_(float dir)
     {
@@ -109,6 +120,7 @@ public class Player : BattleData
 
     private void LateUpdate()
     {
+        playerHPSliderField.transform.position = Camera.main.WorldToScreenPoint(hpbarposition.position);
         Camera.main.transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftC, rightC),
             Camera.main.transform.position.y, Camera.main.transform.position.z);
     }
