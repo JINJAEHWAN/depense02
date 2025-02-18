@@ -67,9 +67,11 @@ public class Player : BattleData
             CurMana -= skills[1].Mana;
         }
         //3번 스킬 아직 안 만듦.
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && skills[2].Mana< CurMana)
         {
-
+            animator.SetTrigger("OnAttack");
+            Instantiate(skills[2], skillposition.position, Quaternion.identity);
+            CurMana -= skills[2].Mana;
         }
     }
 

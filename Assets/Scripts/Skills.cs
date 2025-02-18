@@ -7,7 +7,7 @@ public class Skills : MonoBehaviour
     [Header("소모할 마나 입력")]
     public float Mana;
     [Header("몇 초 후에 삭제할 건지 입력 ")]
-    [SerializeField] private float DestroyTime;
+    public float DestroyTime;
     //충돌 처리는 나중에.
     private void OnTriggerEnter2D(Collider2D collision)
     {
