@@ -6,13 +6,11 @@ public class UnitSponner : MonoBehaviour
     [Header("이곳에 유닛 x축 위치 정하기.")]
     [SerializeField] float onX =0;
 
-    string objName = "clone";
-
     //랜덤용
-    int cpu;
     //y축 위치는 랜덤 3군데
     //random 써서 y 위치 3군데 중 한 군데에 놓기
     //-2 0 2
+    int cpu;
     Vector3 OnPos;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -26,6 +24,7 @@ public class UnitSponner : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            Debug.Log(OnPos);
             Instantiate(Resources.Load("Unit/Unit 1"), OnPos, Quaternion.identity);
         }
     }
@@ -47,5 +46,4 @@ public class UnitSponner : MonoBehaviour
                 break;
         }
     }
-
 }
