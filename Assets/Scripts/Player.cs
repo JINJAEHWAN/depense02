@@ -1,48 +1,50 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : BattleData
 {
     public static Player Instance;
-    public Animator animator;
-    public Rigidbody2D rigid;
+    [HideInInspector] public Animator animator;
 
-    [SerializeField] private float CurFood, FoodRegen, MaxFood, CurMana, ManaRegen, MaxMana;
+    [SerializeField] float CurFood, FoodRegen, MaxFood, CurMana, ManaRegen, MaxMana;
 
     [Header("플레이어 이동 범위")]
-    [SerializeField] private float left;
-    [SerializeField] private float right;
+    [SerializeField] float left;
+    [SerializeField] float right;
 
     [Header("카메라 이동 범위")]
-    [SerializeField] private float leftC;
-    [SerializeField] private float rightC;
+    [SerializeField] float leftC;
+    [SerializeField] float rightC;
 
     [Header("스킬 시전할 위치 Create Empty 해서 등록\n(바꾸고 싶으면 등록되어 있는 오브젝트 위치 수정)")]
-    [SerializeField] private Transform skillposition;
+    [SerializeField] Transform skillposition;
+
+    [Header("HP바 표시할 위치 Create Empty 해서 등록\n(바꾸고 싶으면 등록되어 있는 오브젝트 위치 수정)")]
+    [SerializeField] Transform hpbarposition;
 
     [Header("발동할 스킬 resources에서 찾아서 등록")]
     public Skills[] skills;
 
-    public KeyCode[] Skillkeys = new KeyCode[3];
+    [HideInInspector] public KeyCode[] Skillkeys = new KeyCode[3];
 
     [Header("UI 만들고 Slider, Text 등록")]
     [SerializeField] Slider FoodSlider;
     [SerializeField] Slider ManaSlider;
     [SerializeField] TextMeshProUGUI FoodText;
     [SerializeField] TextMeshProUGUI ManaText;
+    [SerializeField] Slider playerHPSliderTop, playerHPSliderField;
 
     [Header("UI 만들고 이동 버튼 등록")]
-
-    [SerializeField] private MoveButton[] Movebtn = new MoveButton[2];
+    [SerializeField] MoveButton[] Movebtn = new MoveButton[2];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Instance = this;
         animator = GetComponentInChildren<Animator>();
-        rigid = GetComponent<Rigidbody2D>();
-        //스킬 키 설정.
-
+        data.hp = data.MaxHp;
+        //스킬 키 설정. 수정하고 싶으면 여기서 수정.
         Skillkeys[0] = KeyCode.Q;
         Skillkeys[1] = KeyCode.W;
         Skillkeys[2] = KeyCode.E;
@@ -99,7 +101,7 @@ public class Player : BattleData
                 UseNthSkill(i);
             }
         }
-        
+        playerHPSliderField.value = playerHPSliderTop.value = (float)data.hp / data.MaxHp;
     }
     public void Move_(float dir)
     {
@@ -118,6 +120,7 @@ public class Player : BattleData
 
     private void LateUpdate()
     {
+        playerHPSliderField.transform.position = Camera.main.WorldToScreenPoint(hpbarposition.position);
         Camera.main.transform.position = new Vector3(Mathf.Clamp(transform.position.x, leftC, rightC),
             Camera.main.transform.position.y, Camera.main.transform.position.z);
     }

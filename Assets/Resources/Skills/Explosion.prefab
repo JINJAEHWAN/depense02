@@ -19503,8 +19503,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillspr: {fileID: 21300000, guid: caccc09442e90904d94b08c1ae00b653, type: 3}
-  Mana: 15
+  Mana: 16
   DestroyTime: 2
+  IsHeal: 0
+  skillPower: 0
 --- !u!58 &117178469086891163
 CircleCollider2D:
   m_ObjectHideFlags: 0

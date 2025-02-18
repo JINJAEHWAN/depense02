@@ -6,8 +6,12 @@ public class Skills : MonoBehaviour
     public Sprite skillspr;
     [Header("소모할 마나 입력")]
     public float Mana;
-    [Header("몇 초 후에 삭제할 건지 입력 ")]
+    [Header("몇 초 후에 삭제할 건지 입력")]
     public float DestroyTime;
+    [Header("힐 스킬만 체크")]
+    [SerializeField] private bool IsHeal;
+    [Header("딜량/힐량 입력")]
+    public int skillPower;
     //충돌 처리는 나중에.
     private void OnTriggerEnter2D(Collider2D collision)
     {
