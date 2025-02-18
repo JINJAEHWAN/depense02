@@ -12,21 +12,35 @@ public class UnitSponner : MonoBehaviour
     //-2 0 2
     int cpu;
     Vector3 OnPos;
+    KeyCode[] alphas = new KeyCode[8] {
+        KeyCode.Alpha1, KeyCode.Alpha2, 
+        KeyCode.Alpha3, KeyCode.Alpha4, 
+        KeyCode.Alpha5, KeyCode.Alpha6, 
+        KeyCode.Alpha7, KeyCode.Alpha8
+    };
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        caseCpu();   
+           
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        for(int i=0; i<8; i++)
         {
-            Debug.Log(OnPos);
-            Instantiate(Resources.Load("Unit/Unit 1"), OnPos, Quaternion.identity);
+            if (Input.GetKeyDown(alphas[i]))
+            {
+                caseCpu();
+                Debug.Log(OnPos);
+                Instantiate(Resources.Load($"Unit/Unit {i+1}"), OnPos, Quaternion.identity);
+
+
+            } 
+
         }
+
     }
 
     void caseCpu()
