@@ -6,10 +6,11 @@ public class Monster : BattleData
 
     public enum myState
     {
-        create, move, battle, hit
+        none,create, move, battle, hit
     }
 
-    public myState nowState = myState.create;
+    public myState nowState = myState.none;
+    StageLevel stageLevel;
 
     void changeState(myState s)
     {
@@ -18,8 +19,28 @@ public class Monster : BattleData
         {
             case myState.create:
                 setState();
+                changeState(myState.move);
+            break;
+            case myState.move:
                 myStateCo = StartCoroutine(move());
             break;
+            case myState.battle:
+
+            break;
+        }
+    }
+
+
+    void StateProcess()
+    {
+        switch (nowState)
+        {
+            case myState.move:
+
+                break;
+            case myState.battle:
+
+                break;
         }
     }
 
@@ -35,7 +56,7 @@ public class Monster : BattleData
     // Update is called once per frame
     void Update()
     {
-        
+        StateProcess();
     }
 
     IEnumerator move()
@@ -44,7 +65,7 @@ public class Monster : BattleData
         transform.parent = null;
         while (true)
         {
-            transform.Translate(delta * Vector3.left*2.0f) ;
+            transform.Translate(delta * Vector3.left*data.moveSpeed) ;
             yield return null;
         }
     }
@@ -60,10 +81,11 @@ public class Monster : BattleData
     }
     void setState()
     {
-        //data.hp = data.hp * StageLevel;
-        //data.MaxHp;
-        //data.attackPower;
-        //data.attackSpeed;
-        //data.cost;
+        data.hp = data.hp * stageLevel.Level;
+        data.MaxHp = data.MaxHp * stageLevel.Level;
+        data.attackPower = data.attackPower * stageLevel.Level;
+        data.attackSpeed = data.attackSpeed * stageLevel.Level;
+        data.cost = data.cost * stageLevel.Level;
+        data.moveSpeed = data.moveSpeed * stageLevel.Level;
     }
 }

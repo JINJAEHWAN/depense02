@@ -103,12 +103,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    attackPower: 0
-    hp: 0
-    MaxHp: 0
+    attackPower: 10
+    hp: 10
+    MaxHp: 10
     attackSpeed: 0
-    cost: 0
-    moveSpeed: 0
+    cost: 10
+    moveSpeed: 10
+  nowState: 0
   CrashMask:
     serializedVersion: 2
     m_Bits: 0

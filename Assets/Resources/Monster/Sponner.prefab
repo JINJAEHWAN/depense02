@@ -44,7 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659f2f7249db8e540b72dcc3988d1350, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sponners: {x: 8, y: 5}
+  Sponners:
+  - {x: 17, y: 0}
+  - {x: 17, y: 2}
+  - {x: 17, y: -2}
   Monster:
   - {fileID: 6175484363334419072, guid: 7964ba0cbcda41a4782e9efc4c8157c4, type: 3}
   - {fileID: -7247210534143762801, guid: 6b87f09220e95f649b712a334fb17316, type: 3}
