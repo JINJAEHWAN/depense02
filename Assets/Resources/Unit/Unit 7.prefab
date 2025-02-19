@@ -182,12 +182,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    attackPower: 0
+    attackPower: 5
     hp: 0
-    MaxHp: 0
+    MaxHp: 25
     attackSpeed: 1
-    cost: 0
+    cost: 10
     moveSpeed: 4
+  target: []
 --- !u!1 &8940079383185832952
 GameObject:
   m_ObjectHideFlags: 0

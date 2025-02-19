@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 public class Unit : BattleData
 {
-    public List<BattleData> target;
+    List<BattleData> target;
     bool isMove = true;
     float deltaAttack = 0f;
     Animator animator;
@@ -13,8 +13,11 @@ public class Unit : BattleData
     {
         if (collision.gameObject.layer == 11)
         {
-            BattleData bd = collision.gameObject.GetComponent<BattleData>();
-            if (bd != null) { target.Add(bd); }
+            BattleData bd = collision.gameObject.GetComponentInParent<BattleData>();
+            if (bd != null) {
+                Debug.Log(123);
+                target.Add(bd); 
+            }
             
         }
     }
@@ -51,6 +54,7 @@ public class Unit : BattleData
         {
             animator.SetTrigger("IsAttack");
             deltaAttack = -1f;
+            target[0].data.hp -= data.attackPower;
         }
     }
     

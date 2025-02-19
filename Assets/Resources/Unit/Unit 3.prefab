@@ -196,12 +196,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    attackPower: 0
+    attackPower: 5
     hp: 0
-    MaxHp: 0
+    MaxHp: 25
     attackSpeed: 1
-    cost: 0
+    cost: 10
     moveSpeed: 4
+  target: []
 --- !u!50 &9078902111314202502
 Rigidbody2D:
   serializedVersion: 5
