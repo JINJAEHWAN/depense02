@@ -25,4 +25,12 @@ public class BattleData : MonoBehaviour
     {
         
     }
+    public void onHit(int dmg)
+    {
+        data.hp -= dmg;
+        if (data.hp <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 }

@@ -11,6 +11,11 @@ public class Monster : BattleData
 
     public myState nowState = myState.none;
     StageLevel stageLevel;
+    Coroutine myStateCo;
+    public GameObject target;
+    public LayerMask CrashMask;
+    
+    
 
     void changeState(myState s)
     {
@@ -18,14 +23,18 @@ public class Monster : BattleData
         switch (s)
         {
             case myState.create:
+                StopCoroutin();
                 changeState(myState.move);
-            break;
+                break;
             case myState.move:
+                StopCoroutin();
                 myStateCo = StartCoroutine(move());
-            break;
+                break;
             case myState.battle:
-
-            break;
+                StopAllCoroutines();
+                StopCoroutin();
+                myStateCo = StartCoroutine(onBattle());
+                break;
         }
     }
 
@@ -43,17 +52,12 @@ public class Monster : BattleData
         }
     }
 
-    Coroutine myStateCo;
-    public LayerMask CrashMask;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         changeState(myState.move);
         stageLevel = FindFirstObjectByType<StageLevel>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         StateProcess();
@@ -70,21 +74,41 @@ public class Monster : BattleData
         }
     }
 
+    IEnumerator onBattle()
+    {
+        while (true)
+        {
+            target.GetComponent<BattleData>().onHit(data.attackPower);
+            yield return new WaitForSeconds(data.attackSpeed);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if ((1 << collision.gameObject.layer & CrashMask) != 0)
         {
             StopCoroutine(myStateCo);
-            //StopAllCoroutines();
-            //StartCoroutine(Battle());
+            target = collision.gameObject;
+            changeState(myState.battle);
         }
     }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        changeState(myState.move);
+    }
+
+    void StopCoroutin()
+    {
+        if(myStateCo != null)StopCoroutine(myStateCo);
+        myStateCo = null;
+    }
+
     void setState()
     {
         data.hp = data.hp * stageLevel.Level;
         data.MaxHp = data.MaxHp * stageLevel.Level;
         data.attackPower = data.attackPower * stageLevel.Level;
-        data.attackSpeed = data.attackSpeed * stageLevel.Level;
+        data.attackSpeed -= (stageLevel.Level * 0.2f);
         data.cost = data.cost * stageLevel.Level;
         data.moveSpeed = data.moveSpeed * stageLevel.Level;
     }
