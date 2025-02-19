@@ -5,12 +5,11 @@ using UnityEngine.UI;
 
 public class Player : BattleData
 {
-    //다른 스크립트에서 필요하면 Player.Instance로 접근하시오.
     public static Player Instance;
     [HideInInspector] public Animator animator;
 
     public float CurFood, FoodRegen, MaxFood, CurMana, ManaRegen, MaxMana;
-    private float delta = 0f;
+
     [Header("플레이어 이동 범위")]
     [SerializeField] float left;
     [SerializeField] float right;
@@ -33,8 +32,6 @@ public class Player : BattleData
 
     [Header("UI 만들고 이동 버튼 등록")]
     [SerializeField] MoveButton[] Movebtn = new MoveButton[2];
-
-    private SliderValueChange sValueChange;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -51,8 +48,7 @@ public class Player : BattleData
         {
             sUI.InitFunction();
         }
-        sValueChange = FindFirstObjectByType<SliderValueChange>();
-        sValueChange.Start_Func();
+
     }
 
     // Update is called once per frame
@@ -71,31 +67,18 @@ public class Player : BattleData
         {
             Move_(moveDir);
         }
-        else 
+        else if (!Movebtn[0].IsPush && !Movebtn[1].IsPush)
         {
-            bool isMove = false;
-            MoveButton[] m =  FindObjectsByType<MoveButton>(FindObjectsSortMode.None);
-            foreach (MoveButton b in m)
-            {
-                if (b.IsPush) isMove = true;
-            }
-            if (!isMove) animator.SetBool("IsWalk", false);
-
+            animator.SetBool("IsWalk", false);
         }
+        
 
 
-        delta += Time.deltaTime;
-        if(delta > 0.25f)
-        {
-            delta -= 0.25f;
-            if (CurFood < MaxFood) CurFood += FoodRegen * 0.25f;
-            if (CurFood > MaxFood) CurFood = MaxFood;
-            if (CurMana < MaxMana) CurMana += ManaRegen * 0.25f;
-            if (CurMana > MaxMana) CurMana = MaxMana;
-            sValueChange.FoodSliderValueChange();
-            sValueChange.ManaSliderValueChange();
-        }
         //식량, 마나 회복 및 ui에 값 표시
+        if (CurFood < MaxFood) CurFood += FoodRegen * Time.deltaTime;
+        else if (CurFood > MaxFood) CurFood = MaxFood;
+        if (CurMana < MaxMana) CurMana += ManaRegen * Time.deltaTime;
+        else if (CurMana > MaxMana) CurMana = MaxMana;
 
 
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, left, right), transform.position.y, transform.position.z);
@@ -121,7 +104,6 @@ public class Player : BattleData
             animator.SetTrigger("OnAttack");
             Instantiate(skills[n], skillposition.position, Quaternion.identity);
             CurMana -= skills[n].Mana;
-            sValueChange.ManaSliderValueChange();
         }
     }
 
