@@ -19,7 +19,7 @@ public class BattleData : MonoBehaviour
     {
         
     }
-
+    
     // Update is called once per frame
     void Update()
     {

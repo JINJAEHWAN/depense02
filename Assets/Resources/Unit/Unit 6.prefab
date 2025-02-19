@@ -139,10 +139,10 @@ MonoBehaviour:
     attackPower: 5
     hp: 0
     MaxHp: 25
-    attackSpeed: 1
+    attackSpeed: 0.5
     cost: 10
     moveSpeed: 4
-  target: []
+  targets: []
 --- !u!1 &3295102079237751133
 GameObject:
   m_ObjectHideFlags: 0

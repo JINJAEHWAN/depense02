@@ -5,7 +5,8 @@ using NUnit.Framework;
 using System.Collections.Generic;
 public class Unit : BattleData
 {
-    List<BattleData> target;
+    public List<BattleData> targets;
+    BattleData target;
     bool isMove = true;
     float deltaAttack = 0f;
     Animator animator;
@@ -14,9 +15,8 @@ public class Unit : BattleData
         if (collision.gameObject.layer == 11)
         {
             BattleData bd = collision.gameObject.GetComponentInParent<BattleData>();
-            if (bd != null) {
-                Debug.Log(123);
-                target.Add(bd); 
+            if (bd != null && !targets.Contains(bd)) {
+                targets.Add(bd); 
             }
             
         }
@@ -27,7 +27,9 @@ public class Unit : BattleData
         if (collision.gameObject.layer == 11)
         {
             BattleData bd = collision.gameObject.GetComponent<BattleData>();
-            if (bd != null) { target.Remove(bd); }
+            if (bd != null) {
+                targets.Remove(bd); 
+            }
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,13 +37,13 @@ public class Unit : BattleData
     {
         //StartCoroutine(move());
         animator = GetComponentInChildren<Animator>();
-        target = new List<BattleData>();
+        targets = new List<BattleData>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (target.Count<1)
+        if (isMove)
         {
             animator.SetBool("IsWalking", true);
 
@@ -50,11 +52,36 @@ public class Unit : BattleData
         else animator.SetBool("IsWalking", false);
 
         deltaAttack += Time.deltaTime * data.attackSpeed;
-        if (deltaAttack > 0 && target.Count > 0) 
+        if (deltaAttack > 0 && targets.Count > 0) 
         {
             animator.SetTrigger("IsAttack");
             deltaAttack = -1f;
-            target[0].data.hp -= data.attackPower;
+            target = targets[0];
+            StartCoroutine(Attack());
+        }
+    }
+    IEnumerator Attack()
+    {
+        isMove = false;
+        yield return new WaitForSeconds(0.15f);
+        if (target != null)
+        {
+            target.data.hp -= data.attackPower;
+            if (target.data.hp <= 0)
+            {
+                target.data.hp = 0;
+                targets.Remove(target);
+                target.GetComponent<Collider2D>().enabled = false;
+                Destroy(target.gameObject, 0.5f);
+            }
+        }
+        else
+        {
+            targets.RemoveAt(0);
+        }
+        if (targets.Count < 1)
+        {
+            isMove = true;
         }
     }
     

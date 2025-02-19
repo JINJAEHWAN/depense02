@@ -25,7 +25,7 @@ public class Skills : MonoBehaviour
             if(collision.gameObject.layer == 11)
             {
                 BattleData bd = collision.gameObject.GetComponent<BattleData>();
-                if (bd != null)
+                if (bd != null && !targets.Contains(bd))
                 {
                     targets.Add(bd);
                 }
@@ -36,7 +36,7 @@ public class Skills : MonoBehaviour
             if (collision.gameObject.layer == 10)
             {
                 BattleData bd = collision.gameObject.GetComponent<BattleData>();
-                if (bd != null)
+                if (bd != null && !targets.Contains(bd))
                 {
                     targets.Add(bd);
                 }
@@ -57,6 +57,12 @@ public class Skills : MonoBehaviour
             foreach (BattleData bd in targets)
             {
                 bd.data.hp -= skillPower;
+                if (bd.data.hp <= 0)
+                {
+                    bd.data.hp = 0; 
+                    bd.GetComponent<Collider2D>().enabled = false;
+                    Destroy(bd.gameObject, 0.5f);
+                }
             }
         }
         else

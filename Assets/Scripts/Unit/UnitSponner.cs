@@ -33,8 +33,13 @@ public class UnitSponner : MonoBehaviour
             if (Input.GetKeyDown(alphas[i]))
             {
                 caseCpu();
-                Debug.Log(OnPos);
-                Instantiate(Resources.Load($"Unit/Unit {i+1}"), OnPos, Quaternion.identity);
+                if (Resources.Load<Unit>($"Unit/Unit {i + 1}").data.cost <= Player.Instance.CurFood)
+                {
+                    Unit u = Instantiate(Resources.Load<Unit>($"Unit/Unit {i + 1}"), OnPos, Quaternion.identity);
+                    Player.Instance.CurFood -= u.data.cost;
+                    SliderValueChange.Instance.FoodSliderValueChange();
+                }
+                    
 
 
             } 

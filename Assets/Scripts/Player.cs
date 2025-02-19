@@ -115,7 +115,7 @@ public class Player : BattleData
     }
     public void UseNthSkill(int n)
     {
-        if (skills[n].Mana < CurMana)
+        if (skills[n].Mana <= CurMana)
         {
             animator.SetTrigger("OnAttack");
             Instantiate(skills[n], skillposition.position, Quaternion.identity);
