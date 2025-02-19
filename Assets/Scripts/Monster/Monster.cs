@@ -18,7 +18,6 @@ public class Monster : BattleData
         switch (s)
         {
             case myState.create:
-                setState();
                 changeState(myState.move);
             break;
             case myState.move:
@@ -50,7 +49,7 @@ public class Monster : BattleData
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        changeState(myState.create);
+        changeState(myState.move);
     }
 
     // Update is called once per frame
