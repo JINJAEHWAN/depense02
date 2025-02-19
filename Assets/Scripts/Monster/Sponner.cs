@@ -35,6 +35,7 @@ public class Sponner : StageLevel
             Vector2 rndPosition = Sponners[Random.Range(0, Sponners.Length)];
             Monster un = Instantiate(Monster[Random.Range(0,Monster.Length)], new Vector2(rndPosition.x,rndPosition.y), Quaternion.identity);
             un.CrashMask = layerMask;
+            //un.stageLevel.Level = Level;
             yield return new WaitForSeconds(4.0f);
         }
     }

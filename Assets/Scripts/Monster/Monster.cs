@@ -10,7 +10,7 @@ public class Monster : BattleData
     }
 
     public myState nowState = myState.none;
-    StageLevel stageLevel;
+    public StageLevel stageLevel;
     Coroutine myStateCo;
     public GameObject target;
     public LayerMask CrashMask;
@@ -23,7 +23,7 @@ public class Monster : BattleData
         switch (s)
         {
             case myState.create:
-                StopCoroutin();
+                setState();
                 changeState(myState.move);
                 break;
             case myState.move:
@@ -31,7 +31,6 @@ public class Monster : BattleData
                 myStateCo = StartCoroutine(move());
                 break;
             case myState.battle:
-                StopAllCoroutines();
                 StopCoroutin();
                 myStateCo = StartCoroutine(onBattle());
                 break;
@@ -55,7 +54,7 @@ public class Monster : BattleData
     void Start()
     {
         changeState(myState.move);
-        stageLevel = FindFirstObjectByType<StageLevel>();
+        //stageLevel = FindFirstObjectByType<StageLevel>();
     }
 
     void Update()
@@ -65,11 +64,10 @@ public class Monster : BattleData
 
     IEnumerator move()
     {
-        float delta = Time.deltaTime * 2.0f;
-        transform.parent = null;
+        float delta = Time.deltaTime * data.moveSpeed;
         while (true)
         {
-            transform.Translate(delta * Vector3.left*data.moveSpeed) ;
+            transform.Translate(delta * Vector3.left) ;
             yield return null;
         }
     }
@@ -105,6 +103,7 @@ public class Monster : BattleData
 
     void setState()
     {
+        transform.parent = null;
         data.hp = data.hp * stageLevel.Level;
         data.MaxHp = data.MaxHp * stageLevel.Level;
         data.attackPower = data.attackPower * stageLevel.Level;
