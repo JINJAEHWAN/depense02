@@ -146,6 +146,9 @@ MonoBehaviour:
   skillspr: {fileID: 21300000, guid: dd25e00ba744112468a156138bf652ae, type: 3}
   Mana: 13
   DestroyTime: 2
+  IsHeal: 0
+  skillPower: 25
+  targets: []
 --- !u!70 &4939280888372621589
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

@@ -19506,7 +19506,8 @@ MonoBehaviour:
   Mana: 16
   DestroyTime: 2
   IsHeal: 0
-  skillPower: 0
+  skillPower: 35
+  targets: []
 --- !u!58 &117178469086891163
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class SliderValueChange : MonoBehaviour
 {
+    public static SliderValueChange Instance;
     [SerializeField] Slider FoodSlider;
     [SerializeField] Slider ManaSlider;
     [SerializeField] TextMeshProUGUI FoodText;
@@ -13,6 +14,7 @@ public class SliderValueChange : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start_Func()
     {
+        Instance = this;   
         FoodSliderValueChange();
         ManaSliderValueChange();
         PlayerHPSliderValueChange();

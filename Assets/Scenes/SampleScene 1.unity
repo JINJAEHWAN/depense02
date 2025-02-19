@@ -4463,7 +4463,7 @@ GameObject:
   - component: {fileID: 1455700813}
   - component: {fileID: 1455700815}
   - component: {fileID: 1455700814}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4502,7 +4502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     attackPower: 0
-    hp: 2000
+    hp: 1000
     MaxHp: 2000
     attackSpeed: 0
     cost: 0

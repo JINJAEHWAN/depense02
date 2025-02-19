@@ -40,7 +40,6 @@ public class Player : BattleData
     {
         Instance = this;
         animator = GetComponentInChildren<Animator>();
-        data.hp = data.MaxHp;
 
         Skillkeys = new KeyCode[3] {
         KeyCode.Q, KeyCode.W, KeyCode.E
