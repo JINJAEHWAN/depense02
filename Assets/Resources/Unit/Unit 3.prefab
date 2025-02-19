@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 307302275718903073}
   - component: {fileID: 3226016909412170269}
   - component: {fileID: 9078902111314202502}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Unit 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,9 +199,9 @@ MonoBehaviour:
     attackPower: 0
     hp: 0
     MaxHp: 0
-    attackSpeed: 0
+    attackSpeed: 1
     cost: 0
-    moveSpeed: 0
+    moveSpeed: 4
 --- !u!50 &9078902111314202502
 Rigidbody2D:
   serializedVersion: 5

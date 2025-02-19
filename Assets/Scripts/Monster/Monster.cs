@@ -50,6 +50,7 @@ public class Monster : BattleData
     void Start()
     {
         changeState(myState.move);
+        stageLevel = FindFirstObjectByType<StageLevel>();
     }
 
     // Update is called once per frame

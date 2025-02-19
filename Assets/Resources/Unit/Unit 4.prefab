@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 5584995299053983166}
   - component: {fileID: 9151263472905898186}
   - component: {fileID: 7371885754207433051}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Unit 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,9 +193,9 @@ MonoBehaviour:
     attackPower: 0
     hp: 0
     MaxHp: 0
-    attackSpeed: 0
+    attackSpeed: 1
     cost: 0
-    moveSpeed: 0
+    moveSpeed: 4
 --- !u!70 &9151263472905898186
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

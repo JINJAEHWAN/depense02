@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 3565437978425771123}
   - component: {fileID: 2785310199833581071}
   - component: {fileID: 6847218841699961845}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Unit 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,9 +185,9 @@ MonoBehaviour:
     attackPower: 0
     hp: 0
     MaxHp: 0
-    attackSpeed: 0
+    attackSpeed: 1
     cost: 0
-    moveSpeed: 0
+    moveSpeed: 4
 --- !u!1 &8940079383185832952
 GameObject:
   m_ObjectHideFlags: 0
