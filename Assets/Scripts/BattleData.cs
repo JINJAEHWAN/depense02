@@ -30,6 +30,7 @@ public class BattleData : MonoBehaviour
         data.hp -= dmg;
         if (data.hp <= 0)
         {
+            StopAllCoroutines();
             Destroy(gameObject);
         }
     }

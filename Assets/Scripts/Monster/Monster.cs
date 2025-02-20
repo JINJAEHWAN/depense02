@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Monster : BattleData
 {
@@ -9,10 +11,9 @@ public class Monster : BattleData
         none,create, move, battle, hit
     }
 
-    public myState nowState = myState.none;
+    public myState nowState;
     public StageLevel stageLevel;
-    Coroutine myStateCo;
-    public GameObject target;
+    public List<GameObject> target;
     public LayerMask CrashMask;
     
     
@@ -20,6 +21,7 @@ public class Monster : BattleData
     void changeState(myState s)
     {
         if (nowState == s) return;
+        nowState = s;
         switch (s)
         {
             case myState.create:
@@ -27,12 +29,10 @@ public class Monster : BattleData
                 changeState(myState.move);
                 break;
             case myState.move:
-                StopCoroutin();
-                myStateCo = StartCoroutine(move());
+                StartCoroutine(move());
                 break;
             case myState.battle:
-                StopCoroutin();
-                myStateCo = StartCoroutine(onBattle());
+                StartCoroutine(onBattle());
                 break;
         }
     }
@@ -53,13 +53,17 @@ public class Monster : BattleData
 
     void Start()
     {
-        changeState(myState.move);
-        //stageLevel = FindFirstObjectByType<StageLevel>();
+        nowState = myState.none;
+        changeState(myState.create);
     }
 
     void Update()
     {
         StateProcess();
+        if(data.hp <= 0)
+        {
+            StopAllCoroutines();
+        }
     }
 
     IEnumerator move()
@@ -76,8 +80,16 @@ public class Monster : BattleData
     {
         while (true)
         {
-            target.GetComponent<BattleData>().onHit(data.attackPower);
-            yield return new WaitForSeconds(data.attackSpeed);
+            if (target[0] != null)
+            {
+                target[0].GetComponent<BattleData>().onHit(data.attackPower);
+                yield return new WaitForSeconds(data.attackSpeed);
+            }
+            else
+            {
+                target.RemoveAt(0);
+                yield return null;
+            }
         }
     }
 
@@ -85,30 +97,47 @@ public class Monster : BattleData
     {
         if ((1 << collision.gameObject.layer & CrashMask) != 0)
         {
-            StopCoroutine(myStateCo);
-            target = collision.gameObject;
+            StopAllCoroutines();
+            target.Add(collision.gameObject);
+            target = target.Distinct().ToList();
             changeState(myState.battle);
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        changeState(myState.move);
+        if ((1 << collision.gameObject.layer & CrashMask) != 0)
+        {
+            StopAllCoroutines();
+            target.Remove(collision.gameObject);
+            if(target.Count <= 1) { 
+                changeState(myState.move);
+            }
+        }
+    }
+
+    private IEnumerator doDetecting(Collider2D collision)
+    {
+        while (true)
+        {
+            yield return null;
+        }
     }
 
     void StopCoroutin()
     {
-        if(myStateCo != null)StopCoroutine(myStateCo);
-        myStateCo = null;
+        StopAllCoroutines();
+        //if(myStateCo != null)StopCoroutine(myStateCo);
     }
 
     void setState()
     {
         transform.parent = null;
-        data.hp = data.hp * stageLevel.Level;
-        data.MaxHp = data.MaxHp * stageLevel.Level;
-        data.attackPower = data.attackPower * stageLevel.Level;
-        data.attackSpeed -= (stageLevel.Level * 0.2f);
-        data.cost = data.cost * stageLevel.Level;
-        data.moveSpeed = data.moveSpeed * stageLevel.Level;
+        //data.hp = data.hp * stageLevel.Level;
+        //data.MaxHp = data.MaxHp * stageLevel.Level;
+        //data.attackPower = data.attackPower * stageLevel.Level;
+        //data.attackSpeed -= (stageLevel.Level * 0.2f);
+        //data.cost = data.cost * stageLevel.Level;
+        //data.moveSpeed = data.moveSpeed * stageLevel.Level;
     }
 }
