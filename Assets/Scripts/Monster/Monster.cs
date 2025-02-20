@@ -80,14 +80,18 @@ public class Monster : BattleData
     {
         while (true)
         {
-            if (target[0] != null)
+            if (target[0] != null && target.Count != 0)
             {
-                target[0].GetComponent<BattleData>().onHit(data.attackPower);
+                target[0].GetComponentInParent<BattleData>().onHit(data.attackPower);
                 yield return new WaitForSeconds(data.attackSpeed);
+            }
+            else if(target.Count != 0)
+            {
+                target.RemoveAt(0);
+                yield return null;
             }
             else
             {
-                target.RemoveAt(0);
                 yield return null;
             }
         }
@@ -100,6 +104,7 @@ public class Monster : BattleData
             StopAllCoroutines();
             target.Add(collision.gameObject);
             target = target.Distinct().ToList();
+            new WaitForSeconds(2.0f);
             changeState(myState.battle);
         }
     }
