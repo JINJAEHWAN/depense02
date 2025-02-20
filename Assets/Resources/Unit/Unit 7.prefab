@@ -183,12 +183,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     attackPower: 5
-    hp: 0
+    hp: 25
     MaxHp: 25
     attackSpeed: 0.5
     cost: 10
     moveSpeed: 4
   targets: []
+  crashMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &8940079383185832952
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,6 +203,7 @@ GameObject:
   - component: {fileID: 570200050673325360}
   - component: {fileID: 4610675767091748690}
   - component: {fileID: 4696701493738960543}
+  - component: {fileID: 156938071695738815}
   m_Layer: 0
   m_Name: PeopleBoy_Idle_1_0
   m_TagString: Untagged
@@ -299,3 +303,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &156938071695738815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940079383185832952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c075bd9b6d9c15e46aae9011d8ab3369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6847218841699961845}
+        m_TargetAssemblyTypeName: Unit, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

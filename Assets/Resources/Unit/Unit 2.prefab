@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 8085518654734321080}
   - component: {fileID: 2590801958965061859}
   - component: {fileID: 8310623336148586035}
+  - component: {fileID: 8243631212930607879}
   m_Layer: 0
   m_Name: FormalWoman
   m_TagString: Untagged
@@ -179,6 +180,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8243631212930607879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3703951676619379553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c075bd9b6d9c15e46aae9011d8ab3369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4083947832093154296}
+        m_TargetAssemblyTypeName: Unit, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4174785659634440473
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,9 +321,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     attackPower: 5
-    hp: 0
+    hp: 25
     MaxHp: 25
     attackSpeed: 0.5
     cost: 10
     moveSpeed: 4
   targets: []
+  crashMask:
+    serializedVersion: 2
+    m_Bits: 2048

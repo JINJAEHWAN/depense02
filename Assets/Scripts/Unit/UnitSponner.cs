@@ -7,10 +7,7 @@ public class UnitSponner : MonoBehaviour
     [SerializeField] float onX =0;
 
     //랜덤용
-    //y축 위치는 랜덤 3군데
-    //random 써서 y 위치 3군데 중 한 군데에 놓기
-    //-2 0 2
-    int cpu;
+    float cpu;
     Vector3 OnPos;
     KeyCode[] alphas = new KeyCode[8] {
         KeyCode.Alpha1, KeyCode.Alpha2, 
@@ -50,19 +47,10 @@ public class UnitSponner : MonoBehaviour
 
     void caseCpu()
     {
-        cpu = Random.Range(0, 3);
+        //-1.0에서 1.0까지 랜덤한 값
+        cpu = Random.Range(-1.0f, 1.0f);
 
-        switch (cpu)
-        {
-            case 0:
-                OnPos = new Vector3(onX, -2, 0);
-                break;
-            case 1:
-                OnPos = new Vector3(onX, 0, 0);
-                break;
-            case 2:
-                OnPos = new Vector3(onX, 2, 0);
-                break;
-        }
+        OnPos = new Vector3(onX, cpu, 0);
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.InputSystem.Controls;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 public class Unit : BattleData
 {
     public List<BattleData> targets;
@@ -10,9 +11,11 @@ public class Unit : BattleData
     bool isMove = true;
     float deltaAttack = 0f;
     Animator animator;
+    public LayerMask crashMask;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 11)
+        if ((1 << collision.gameObject.layer & crashMask)!=0)
         {
             BattleData bd = collision.gameObject.GetComponentInParent<BattleData>();
             if (bd != null && !targets.Contains(bd)) {
@@ -24,7 +27,7 @@ public class Unit : BattleData
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 11)
+        if ((1 << collision.gameObject.layer & crashMask) != 0)
         {
             BattleData bd = collision.gameObject.GetComponent<BattleData>();
             if (bd != null) {
@@ -51,19 +54,46 @@ public class Unit : BattleData
         }
         else animator.SetBool("IsWalking", false);
 
-        deltaAttack += Time.deltaTime * data.attackSpeed;
+        deltaAttack += Time.deltaTime;
         if (deltaAttack > 0 && targets.Count > 0) 
         {
             animator.SetTrigger("IsAttack");
-            deltaAttack = -1f;
+            deltaAttack = -data.attackSpeed;
             target = targets[0];
-            StartCoroutine(Attack());
+            //StartCoroutine(Attack());
+
         }
     }
     IEnumerator Attack()
     {
         isMove = false;
-        yield return new WaitForSeconds(0.15f);
+
+        if (target != null)
+        {
+            target.data.hp -= data.attackPower;
+            if (target.data.hp <= 0)
+            {
+                target.data.hp = 0;
+                targets.Remove(target);
+                target.GetComponent<Collider2D>().enabled = false;
+                Destroy(target.gameObject, 0.5f);
+            }
+        }
+        else
+        {
+            targets.RemoveAt(0);
+        }
+        if (targets.Count < 1)
+        {
+            isMove = true;
+        }
+        yield return null;
+    }
+    
+    public void OnAttack()
+    {
+        isMove = false;
+
         if (target != null)
         {
             target.data.hp -= data.attackPower;
@@ -84,7 +114,7 @@ public class Unit : BattleData
             isMove = true;
         }
     }
-    
+
     IEnumerator move()
     {
         while (isMove)
