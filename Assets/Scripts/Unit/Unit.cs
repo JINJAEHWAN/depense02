@@ -13,32 +13,31 @@ public class Unit : BattleData
     Animator animator;
     public LayerMask crashMask;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if ((1 << collision.gameObject.layer & crashMask)!=0)
-        {
-            BattleData bd = collision.gameObject.GetComponentInParent<BattleData>();
-            if (bd != null && !targets.Contains(bd)) {
-                targets.Add(bd); 
-            }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if ((1 << collision.transform.gameObject.layer & crashMask)!=0)
+    //    {
+    //        BattleData bd = collision.gameObject.GetComponentInParent<BattleData>();
+    //        if (bd != null && !targets.Contains(bd)) {
+    //            targets.Add(bd); 
+    //        }
             
-        }
-    }
+    //    }
+    //}
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if ((1 << collision.gameObject.layer & crashMask) != 0)
-        {
-            BattleData bd = collision.gameObject.GetComponent<BattleData>();
-            if (bd != null) {
-                targets.Remove(bd); 
-            }
-        }
-    }
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if ((1 << collision.transform.gameObject.layer & crashMask)!= 0)
+    //    {
+    //        BattleData bd = collision.gameObject.GetComponent<BattleData>();
+    //        if (bd != null) {
+    //            targets.RemoveAt(0); 
+    //        }
+    //    }
+    //}
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //StartCoroutine(move());
         animator = GetComponentInChildren<Animator>();
         targets = new List<BattleData>();
     }
@@ -46,7 +45,28 @@ public class Unit : BattleData
     // Update is called once per frame
     void Update()
     {
-        if (isMove)
+        
+        deltaAttack += Time.deltaTime;
+        if (deltaAttack > 0 && targets.Count > 0)
+        {
+            animator.SetTrigger("IsAttack");
+            deltaAttack = -data.attackSpeed;
+            target = targets[0];
+        }
+        RaycastHit2D hit = Physics2D.Raycast(this.gameObject.transform.position, Vector2.right, 1.0f);
+        if (hit.collider != null)
+        {
+            //콜라이더가 부딪히면 타겟을 add
+            if ((1 << hit.collider.transform.gameObject.layer & crashMask) != 0)
+            {
+                BattleData bd = hit.collider.gameObject.GetComponentInParent<BattleData>();
+                if (bd != null && !targets.Contains(bd))
+                {
+                    targets.Add(bd);
+                }
+            }
+        }
+        if (isMove && targets.Count < 1)
         {
             animator.SetBool("IsWalking", true);
 
@@ -54,42 +74,7 @@ public class Unit : BattleData
         }
         else animator.SetBool("IsWalking", false);
 
-        deltaAttack += Time.deltaTime;
-        if (deltaAttack > 0 && targets.Count > 0) 
-        {
-            animator.SetTrigger("IsAttack");
-            deltaAttack = -data.attackSpeed;
-            target = targets[0];
-            //StartCoroutine(Attack());
-
-        }
     }
-    IEnumerator Attack()
-    {
-        isMove = false;
-
-        if (target != null)
-        {
-            target.data.hp -= data.attackPower;
-            if (target.data.hp <= 0)
-            {
-                target.data.hp = 0;
-                targets.Remove(target);
-                target.GetComponent<Collider2D>().enabled = false;
-                Destroy(target.gameObject, 0.5f);
-            }
-        }
-        else
-        {
-            targets.RemoveAt(0);
-        }
-        if (targets.Count < 1)
-        {
-            isMove = true;
-        }
-        yield return null;
-    }
-    
     public void OnAttack()
     {
         isMove = false;
@@ -100,28 +85,15 @@ public class Unit : BattleData
             if (target.data.hp <= 0)
             {
                 target.data.hp = 0;
-                targets.Remove(target);
                 target.GetComponent<Collider2D>().enabled = false;
-                Destroy(target.gameObject, 0.5f);
+                Destroy(target.gameObject);
+                isMove = true;
+                targets.RemoveAt(0);
             }
         }
-        else
-        {
-            targets.RemoveAt(0);
-        }
-        if (targets.Count < 1)
-        {
-            isMove = true;
-        }
+
     }
 
-    IEnumerator move()
-    {
-        while (isMove)
-        {
-            transform.position += (Vector3)(Vector2.right * data.moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-    }
+
 
 }

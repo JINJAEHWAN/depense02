@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7431973229995797000}
   - component: {fileID: 8485854682375377238}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Detected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,8 @@ MonoBehaviour:
     moveSpeed: 10
   nowState: 0
   stageLevel: {fileID: 0}
-  target: {fileID: 0}
+  target:
+  - {fileID: 0}
   CrashMask:
     serializedVersion: 2
     m_Bits: 0
