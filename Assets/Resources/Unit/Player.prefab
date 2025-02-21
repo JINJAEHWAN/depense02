@@ -198,9 +198,9 @@ MonoBehaviour:
     cost: 0
     moveSpeed: 7
   animator: {fileID: 0}
-  CurFood: 0
+  CurFood: 50
   FoodRegen: 2
-  MaxFood: 80
+  MaxFood: 100
   CurMana: 0
   ManaRegen: 8
   MaxMana: 110

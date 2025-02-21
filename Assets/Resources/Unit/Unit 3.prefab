@@ -231,9 +231,11 @@ MonoBehaviour:
     cost: 10
     moveSpeed: 4
   targets: []
+  animator: {fileID: 0}
   crashMask:
     serializedVersion: 2
     m_Bits: 2048
+  myState: 0
 --- !u!50 &9078902111314202502
 Rigidbody2D:
   serializedVersion: 5
@@ -328,5 +330,5 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 10}
+  m_Size: {x: 0.5, y: 15}
   m_Direction: 0
