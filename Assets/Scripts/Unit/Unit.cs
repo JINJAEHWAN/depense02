@@ -93,7 +93,8 @@ public class Unit : BattleData
             ChangeState(State.Normal);
         }
 
-        targets[0].GetComponent<BattleData>().deathAlarm += () => ChangeState(State.Normal); // Á×¿´À» ¶§ normal state.
+        if(targets.Count > 0)
+            targets[0].GetComponent<BattleData>().deathAlarm += () => ChangeState(State.Normal); // Á×¿´À» ¶§ normal state.
     }
 
     //public void LostTarget()
