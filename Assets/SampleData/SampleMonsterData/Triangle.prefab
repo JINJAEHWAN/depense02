@@ -104,15 +104,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    attackPower: 1
+    attackPower: 20
     hp: 10
     MaxHp: 10
-    attackSpeed: 100
+    attackSpeed: 1
     cost: 10
     moveSpeed: 10
   nowState: 0
   stageLevel: {fileID: 0}
-  target: {fileID: 0}
+  target:
+  - {fileID: 0}
   CrashMask:
     serializedVersion: 2
     m_Bits: 0

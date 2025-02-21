@@ -37,22 +37,12 @@ public class Unit : BattleData
                 break;
             case State.Battle:
                 animator.SetBool("IsWalking", false);
-                targets[0].GetComponent<BattleData>().deathAlarm += () => ChangeState(State.Normal);
                 StopAllCoroutines();
                 break;
             case State.Death:
-                StopAllCoroutines();
-                gameObject.GetComponent<Collider>().enabled = false;
-                StartCoroutine(DisApearing());
+                animator.SetTrigger("IsDead");
                 break;
         }
-    }
-
-    IEnumerator DisApearing()
-    {
-        yield return new WaitForSeconds(1.0f);
-
-        animator.SetTrigger("IsDead");
     }
 
     void StateProcess()
@@ -64,11 +54,7 @@ public class Unit : BattleData
                 rayFollow();//ray가 맞으면 타겟을 add
                 break;
             case State.Battle:
-                if (targets.Count == 0 || targets[0] == null)
-                {
-                    //targets[0] = null;
-                    ChangeState(State.Normal);
-                }
+                
                 OnBattle();
                 break;
         }
@@ -100,15 +86,15 @@ public class Unit : BattleData
             deltaAttack = -data.attackSpeed;
 
             target = targets[0];
-            target.OnDamage(data.attackPower);
+            target.onHit(data.attackPower);
         }
 
-        if (targets.Count < 1)
+        if (targets.Count == 0 || targets[0] == null)
         {
-            LostTarget();
+            ChangeState(State.Normal);
         }
 
-
+        targets[0].GetComponent<BattleData>().deathAlarm += () => ChangeState(State.Normal); // 죽였을 때 normal state.
     }
 
     public void LostTarget()
@@ -140,7 +126,6 @@ public class Unit : BattleData
                 {
                     targets.Add(bd);
                     ChangeState(State.Battle);
-
                 }
             }
         }
@@ -154,13 +139,15 @@ public class Unit : BattleData
             {
                 target.data.hp = 0;
                 target.GetComponent<Collider2D>().enabled = false;
-                Destroy(target.gameObject);
+                
                 targets.RemoveAt(0);
             }
         }
-
     }
-
+    public void OnDead()
+    {
+        Destroy(transform.gameObject);
+    }
 
 
 }
