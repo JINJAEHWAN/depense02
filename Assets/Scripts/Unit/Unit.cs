@@ -54,7 +54,6 @@ public class Unit : BattleData
                 rayFollow();//ray가 맞으면 타겟을 add
                 break;
             case State.Battle:
-                
                 OnBattle();
                 break;
         }
@@ -97,10 +96,10 @@ public class Unit : BattleData
         targets[0].GetComponent<BattleData>().deathAlarm += () => ChangeState(State.Normal); // 죽였을 때 normal state.
     }
 
-    public void LostTarget()
-    {
-        ChangeState(State.Normal);
-    }
+    //public void LostTarget()
+    //{
+    //    ChangeState(State.Normal);
+    //}
 
     public void MoveTo(Vector3 pos)
     {
@@ -115,18 +114,14 @@ public class Unit : BattleData
 
     public void rayFollow()
     {
-        RaycastHit2D hit = Physics2D.Raycast(this.gameObject.transform.position, Vector2.right, 1.0f);
-        if (hit.collider != null)
+        Collider2D hit = Physics2D.OverlapBox(this.gameObject.transform.position, new Vector2(0.5f,4.0f), 0, crashMask);
+        if (hit != null)
         {
-            //콜라이더가 부딪히면 타겟을 add
-            if ((1 << hit.collider.transform.gameObject.layer & crashMask) != 0)
+            BattleData bd = hit.GetComponentInParent<BattleData>();
+            if (bd != null && !targets.Contains(bd))
             {
-                BattleData bd = hit.collider.gameObject.GetComponentInParent<BattleData>();
-                if (bd != null && !targets.Contains(bd))
-                {
-                    targets.Add(bd);
-                    ChangeState(State.Battle);
-                }
+                targets.Add(bd);
+                ChangeState(State.Battle);
             }
         }
     }
