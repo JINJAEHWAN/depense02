@@ -16,7 +16,9 @@ public struct battleData
 public class BattleData : MonoBehaviour
 {
     public event UnityAction deathAlarm;
+    public event UnityAction HPBarChange;
     public battleData data;
+   
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,6 +34,7 @@ public class BattleData : MonoBehaviour
     public void onHit(int dmg)
     {
         data.hp -= dmg;
+        HPBarChange?.Invoke();
         if (data.hp <= 0)
         {
             StopAllCoroutines();

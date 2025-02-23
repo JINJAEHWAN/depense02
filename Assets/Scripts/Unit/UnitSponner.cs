@@ -1,8 +1,9 @@
+using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 
 public class UnitSponner : MonoBehaviour
 {
-
+    private Player player;
     [Header("이곳에 유닛 x축 위치 정하기.")]
     [SerializeField] float onX =0;
 
@@ -19,7 +20,8 @@ public class UnitSponner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-           
+        player = FindFirstObjectByType<Player>();
+
     }
 
     // Update is called once per frame
@@ -30,10 +32,10 @@ public class UnitSponner : MonoBehaviour
             if (Input.GetKeyDown(alphas[i]))
             {
                 caseCpu();
-                if (Resources.Load<Unit>($"Unit/Unit {i + 1}").data.cost <= Player.Instance.CurFood)
+                if (Resources.Load<Unit>($"Unit/Unit {i + 1}").data.cost <= player.CurFood)
                 {
                     Unit u = Instantiate(Resources.Load<Unit>($"Unit/Unit {i + 1}"), OnPos, Quaternion.identity);
-                    Player.Instance.CurFood -= u.data.cost;
+                    player.CurFood -= u.data.cost;
                     SliderValueChange.Instance.FoodSliderValueChange();
                 }
                     

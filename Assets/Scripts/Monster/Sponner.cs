@@ -5,9 +5,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Sponner : StageLevel
 {
-    /// <summary>
-    /// Spawner가 맞음....
-    /// </summary>
+    
     [Header("스포너 위치에 따른 생성")]
     [SerializeField] Vector2[] Sponners;
 

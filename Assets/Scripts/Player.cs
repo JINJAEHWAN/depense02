@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class Player : BattleData
 {
-    //다른 스크립트에서 필요하면 Player.Instance로 접근하시오.
-    public static Player Instance;
+
     [HideInInspector] public Animator animator;
 
     public float CurFood, FoodRegen, MaxFood, CurMana, ManaRegen, MaxMana;
@@ -34,11 +33,9 @@ public class Player : BattleData
     [Header("UI 만들고 이동 버튼 등록")]
     [SerializeField] MoveButton[] Movebtn = new MoveButton[2];
 
-    private SliderValueChange sValueChange;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Instance = this;
         animator = GetComponentInChildren<Animator>();
 
         Skillkeys = new KeyCode[3] {
@@ -50,8 +47,12 @@ public class Player : BattleData
         {
             sUI.InitFunction();
         }
-        sValueChange = FindFirstObjectByType<SliderValueChange>();
-        sValueChange.Start_Func();
+        HPBarChange += () => SliderValueChange.Instance.PlayerHPSliderValueChange();
+        deathAlarm += () =>
+        {
+            GetComponent<Collider2D>().enabled = false;
+            animator.SetTrigger("Die");
+        };
     }
 
     // Update is called once per frame
@@ -91,8 +92,8 @@ public class Player : BattleData
             if (CurFood > MaxFood) CurFood = MaxFood;
             if (CurMana < MaxMana) CurMana += ManaRegen * 0.25f;
             if (CurMana > MaxMana) CurMana = MaxMana;
-            sValueChange.FoodSliderValueChange();
-            sValueChange.ManaSliderValueChange();
+            SliderValueChange.Instance.FoodSliderValueChange();
+            SliderValueChange.Instance.ManaSliderValueChange();
         }
         //식량, 마나 회복 및 ui에 값 표시
 
@@ -120,7 +121,7 @@ public class Player : BattleData
             animator.SetTrigger("OnAttack");
             Instantiate(skills[n], skillposition.position, Quaternion.identity);
             CurMana -= skills[n].Mana;
-            sValueChange.ManaSliderValueChange();
+            SliderValueChange.Instance.ManaSliderValueChange();
         }
     }
 
