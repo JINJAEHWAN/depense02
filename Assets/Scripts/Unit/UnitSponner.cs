@@ -38,14 +38,23 @@ public class UnitSponner : MonoBehaviour
                     player.CurFood -= u.data.cost;
                     SliderValueChange.Instance.FoodSliderValueChange();
                 }
-                    
-
-
             } 
-
         }
-
     }
+
+    public void clickUnit(int a)
+    {
+        caseCpu();
+        if(Resources.Load<Unit>($"Unit/Unit {a}").data.cost <= player.CurFood)
+        {
+            Unit u = Instantiate(Resources.Load<Unit>($"Unit/Unit {a}"), OnPos, Quaternion.identity);
+            player.CurFood -= u.data.cost;
+            SliderValueChange.Instance.FoodSliderValueChange();
+        }
+    }
+
+
+
 
     void caseCpu()
     {
