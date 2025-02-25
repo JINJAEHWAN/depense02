@@ -95,6 +95,12 @@ public class Unit : BattleData
 
         if(targets.Count > 0)
             targets[0].GetComponent<BattleData>().deathAlarm += () => ChangeState(State.Normal); // Á×¿´À» ¶§ normal state.
+
+        if(data.hp <= 0)
+        {
+            ChangeState(State.Death);
+        }
+
     }
 
     //public void LostTarget()
@@ -106,7 +112,7 @@ public class Unit : BattleData
     {
         if (!target)
         {
-            transform.position += (Vector3)(Vector2.right * data.moveSpeed * Time.deltaTime);//¿òÁ÷ÀÓÀÌ ¾È µÊ.
+            transform.position += (Vector3)(Vector2.right * data.moveSpeed * Time.deltaTime);
             animator.SetBool("IsWalking", true);
         }
 

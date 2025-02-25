@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8878595760280406766}
-  - component: {fileID: 1288682483128051680}
+  - component: {fileID: 3367190712564090942}
   m_Layer: 0
   m_Name: Sponner
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1288682483128051680
+--- !u!114 &3367190712564090942
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,16 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7371720918095368481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 659f2f7249db8e540b72dcc3988d1350, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d4700fc4e07df845bb77d9434e803bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Sponners:
+  - {x: 17, y: -1}
   - {x: 17, y: 0}
-  - {x: 17, y: 2}
-  - {x: 17, y: -2}
-  Monster:
-  - {fileID: 6175484363334419072, guid: 7964ba0cbcda41a4782e9efc4c8157c4, type: 3}
-  - {fileID: -7247210534143762801, guid: 6b87f09220e95f649b712a334fb17316, type: 3}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1024
+  - {x: 17, y: 1}

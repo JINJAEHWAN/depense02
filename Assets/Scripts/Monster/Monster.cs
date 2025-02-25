@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class Monster : BattleData
 {
 
     public enum myState
     {
-        none,create, move, battle, hit
+        create, move, battle, death
     }
 
     public myState nowState;
     public StageLevel stageLevel;
-    public List<GameObject> target;
+    public List<BattleData> targets;
+    BattleData target;
     public LayerMask CrashMask;
-    
-    
+    [SerializeField] Animator animator;
+
 
     void changeState(myState s)
     {
@@ -24,15 +26,16 @@ public class Monster : BattleData
         nowState = s;
         switch (s)
         {
-            case myState.create:
-                setState();
-                changeState(myState.move);
-                break;
             case myState.move:
                 StartCoroutine(move());
                 break;
             case myState.battle:
+                animator.SetBool("IsWalk", false);
+                StopAllCoroutines();
                 StartCoroutine(onBattle());
+                break;
+            case myState.death:
+                animator.SetTrigger("IsDeath");
                 break;
         }
     }
@@ -43,7 +46,7 @@ public class Monster : BattleData
         switch (nowState)
         {
             case myState.move:
-
+                rayFollow();
                 break;
             case myState.battle:
 
@@ -53,8 +56,9 @@ public class Monster : BattleData
 
     void Start()
     {
-        nowState = myState.none;
-        changeState(myState.create);
+        animator = GetComponentInChildren<Animator>();
+        deathAlarm += () => changeState(myState.death);
+        changeState(myState.move);
     }
 
     void Update()
@@ -68,81 +72,67 @@ public class Monster : BattleData
 
     IEnumerator move()
     {
-        float delta = Time.deltaTime * data.moveSpeed;
-        while (true)
+        while (!target)
         {
-            transform.Translate(delta * Vector3.left) ;
+            transform.position += (Vector3)(Vector2.left * data.moveSpeed * Time.deltaTime);
+            animator.SetBool("IsWalk", true);
             yield return null;
         }
     }
 
     IEnumerator onBattle()
     {
-        while (true)
+
+        while( targets.Count > 0)
         {
-            if (target[0] != null && target.Count != 0)
+            if(targets[0]!= null && targets.Count != 0)
             {
-                target[0].GetComponentInParent<BattleData>().onHit(data.attackPower);
+                animator.SetTrigger("IsAttack");
+                targets[0].GetComponentInParent<BattleData>().onHit(data.attackPower);
+
                 yield return new WaitForSeconds(data.attackSpeed);
             }
-            else if(target.Count != 0)
+            if (targets.Count > 0)
+                targets[0].GetComponent<BattleData>().deathAlarm += () => changeState(myState.move); // Á×¿´À» ¶§ normal state.
+            if (targets.Count == 0 || targets[0] == null)
             {
-                target.RemoveAt(0);
-                yield return null;
-            }
-            else
-            {
-                yield return null;
-            }
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if ((1 << collision.gameObject.layer & CrashMask) != 0)
-        {
-            StopAllCoroutines();
-            target.Add(collision.gameObject);
-            target = target.Distinct().ToList();
-            new WaitForSeconds(2.0f);
-            changeState(myState.battle);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if ((1 << collision.gameObject.layer & CrashMask) != 0)
-        {
-            StopAllCoroutines();
-            target.Remove(collision.gameObject);
-            if(target.Count <= 1) { 
                 changeState(myState.move);
             }
+            if (data.hp <= 0)
+            {
+                changeState(myState.death);
+            }
         }
     }
-
-    private IEnumerator doDetecting(Collider2D collision)
+    public void rayFollow()
     {
-        while (true)
+        Collider2D hit = Physics2D.OverlapBox(this.gameObject.transform.position, new Vector2(0.5f, 4.0f), 0, CrashMask);
+        if (hit != null)
         {
-            yield return null;
+            BattleData bd = hit.GetComponentInParent<BattleData>();
+            if (bd != null && !targets.Contains(bd))
+            {
+                targets.Add(bd);
+                changeState(myState.battle);
+            }
         }
     }
-
-    void StopCoroutin()
+    public void OnAttack()
     {
-        StopAllCoroutines();
-        //if(myStateCo != null)StopCoroutine(myStateCo);
+        if (target != null)
+        {
+            target.data.hp -= data.attackPower;
+            if (target.data.hp <= 0)
+            {
+                target.data.hp = 0;
+                target.GetComponent<Collider2D>().enabled = false;
+
+                targets.RemoveAt(0);
+            }
+        }
     }
-
-    void setState()
+    public void Ondead()
     {
-        transform.parent = null;
-        //data.hp = data.hp * stageLevel.Level;
-        //data.MaxHp = data.MaxHp * stageLevel.Level;
-        //data.attackPower = data.attackPower * stageLevel.Level;
-        //data.attackSpeed -= (stageLevel.Level * 0.2f);
-        //data.cost = data.cost * stageLevel.Level;
-        //data.moveSpeed = data.moveSpeed * stageLevel.Level;
+        Destroy(transform.gameObject);
     }
 }
