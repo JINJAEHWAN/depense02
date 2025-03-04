@@ -25,9 +25,9 @@ public class MonsterSponner : MonoBehaviour
         {
             Vector2 rndPosition = Sponners[Random.Range(0, Sponners.Length)];
             //현재는 몬스터가 1개임.
-            Monster m= Instantiate(Resources.Load<Monster>($"Monster/Monster 1"), 
+            Monster m= Instantiate(Resources.Load<Monster>($"Monster/Monster 1"), //{Random.Range(1,4)}
                 new Vector2(rndPosition.x, rndPosition.y), Quaternion.identity);
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(5.0f);
         }
     }
 }

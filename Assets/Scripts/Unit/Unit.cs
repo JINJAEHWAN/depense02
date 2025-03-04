@@ -85,7 +85,7 @@ public class Unit : BattleData
             deltaAttack = -data.attackSpeed;
 
             target = targets[0];
-            target.onHit(data.attackPower);
+            target.GetComponentInParent<BattleData>().onHit(data.attackPower);
         }
 
         if (targets.Count == 0 || targets[0] == null)
@@ -94,7 +94,7 @@ public class Unit : BattleData
         }
 
         if(targets.Count > 0)
-            targets[0].GetComponent<BattleData>().deathAlarm += () => ChangeState(State.Normal); // Á×¿´À» ¶§ normal state.
+            targets[0].GetComponentInParent<BattleData>().deathAlarm += () => ChangeState(State.Normal); // Á×¿´À» ¶§ normal state.
 
         if(data.hp <= 0)
         {

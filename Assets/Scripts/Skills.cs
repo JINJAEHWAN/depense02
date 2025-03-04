@@ -24,7 +24,7 @@ public class Skills : MonoBehaviour
         {
             if(collision.gameObject.layer == 11)
             {
-                BattleData bd = collision.gameObject.GetComponent<BattleData>();
+                BattleData bd = collision.gameObject.GetComponent<BattleData>();//GetComponentInparent
                 if (bd != null && !targets.Contains(bd))
                 {
                     targets.Add(bd);
